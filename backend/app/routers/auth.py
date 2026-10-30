@@ -41,7 +41,7 @@ async def register(payload: schemas.RegisterRequest):
 
 @router.post("/login", response_model=schemas.TokenResponse)
 async def login(payload: schemas.LoginRequest):
-    user = await users_collection.find_one({"username": payload.username})
+    user = await users_collection.find_one({"username": payload.username.strip().lower()})
     if not user or not verify_password(payload.password, user["hashed_password"]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
 
