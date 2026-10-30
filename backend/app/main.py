@@ -4,7 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
-from .database import create_indexes, ping
+from .database import create_indexes, ping, users_collection
+from .auth import hash_password
+from . import models
 from .routers import auth, documents, records, dashboard, search, audit, students
 
 
@@ -12,6 +14,20 @@ from .routers import auth, documents, records, dashboard, search, audit, student
 async def lifespan(app: FastAPI):
     await ping()
     await create_indexes()
+    # Provision the privileged account from encrypted deployment environment variables.
+    # Never expose ADMIN_PASSWORD through an API response or public registration.
+    if settings.ADMIN_USERNAME.strip() and settings.ADMIN_PASSWORD:
+        admin_username = settings.ADMIN_USERNAME.strip().lower()
+        existing_admin = await users_collection.find_one({"username": admin_username})
+        if not existing_admin:
+            await users_collection.insert_one({
+                "_id": models.gen_uuid(),
+                "username": admin_username,
+                "full_name": "AICTE Administrator",
+                "hashed_password": hash_password(settings.ADMIN_PASSWORD),
+                "role": models.UserRole.ADMIN.value,
+                "created_at": models.utcnow(),
+            })
     yield
 
 
