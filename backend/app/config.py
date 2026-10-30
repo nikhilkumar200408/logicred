@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 20
     ALLOWED_EXTENSIONS: tuple = (".pdf", ".jpg", ".jpeg", ".png")
 
-    UPLOAD_DIR: str = "./uploads"
+    UPLOAD_DIR: str = "/tmp/logicred_uploads"
 
     # --- Notifications: fired when a record lands with anomaly_level=HIGH ---
     NOTIFICATIONS_ENABLED: bool = False
