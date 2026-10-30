@@ -1,50 +1,81 @@
-# LogicRed
+# LogicRed — APAAR Student Data Verification Platform
 
-### APAAR-based Student Data Management & Verification System for AICTE
-**Institution → Student Data Upload → APAAR Validation → Data Verification → AICTE Central Repository → Analytics & Monitoring → Authorized Verification**
+> **Smart India Hackathon | Problem Statement 26263**  
+> AI-powered student admission data validation, anomaly detection, human verification and analytics for AICTE.
 
-LogicRed gives AICTE a single place where approved institutions submit student-level admission data keyed by
-**APAAR ID**, with automated validation, anomaly detection, real-time dashboards and secure, consent-aware verification.
-(Built on the earlier BhoomiTrust-AI validate → score → verify → audit framework, re-targeted to this problem statement.)
+**Verify · Analyze · Empower**
+
+[![Live Frontend](https://img.shields.io/badge/Live%20Demo-logicred.vercel.app-2563eb?style=for-the-badge)](https://logicred.vercel.app) [![API Docs](https://img.shields.io/badge/API%20Docs-FastAPI-059669?style=for-the-badge)](https://logicred-api-nikhil-s-projects22.vercel.app/docs) [![Source Code](https://img.shields.io/badge/GitHub-Source-111827?style=for-the-badge)](https://github.com/nikhilkumar200408/logicred)
+
+## What LogicRed does
+
+LogicRed provides a centralized workflow for AICTE-approved institutions to submit student admission data keyed by APAAR ID. It combines structured CSV/manual entry, document digitization, rule-based validation, anomaly flags, human review and admission monitoring.
+
+### Product walkthrough
+
+| Admissions monitoring dashboard | Student data entry |
+|---|---|
+| ![LogicRed dashboard](docs/screenshots/01-admissions-dashboard.png) | ![Student data upload](docs/screenshots/02-student-data-upload.png) |
+
+| Document digitization | Human verification |
+|---|---|
+| ![Upload and digitize](docs/screenshots/03-upload-digitize.png) | ![Human verification](docs/screenshots/04-human-verification.png) |
+
+> Screenshots are intended to be stored in `docs/screenshots/`. See [SIH submission notes](docs/SIH_SUBMISSION.md) for the presentation flow and evidence checklist.
+
+## Key capabilities
+
+- **Institutional student-data intake:** single-record entry and bulk CSV upload.
+- **APAAR-centric validation:** missing/invalid IDs, duplicate records, intake excess and cross-institution inconsistencies are flagged.
+- **Document digitization workflow:** drag-and-drop scanned admission documents with OCR-oriented extraction flow.
+- **Human-in-the-loop verification:** reviewers compare extracted fields with source evidence, edit uncertain values and approve/reject records.
+- **Admissions analytics:** institution/program intake utilization, pending verification and anomaly monitoring.
+- **Role-based access:** institution, employer and privileged AICTE roles with protected administrative access.
+- **API integration:** REST endpoints and interactive OpenAPI documentation.
 
 ## Problem-statement coverage
 
-| # | Requirement | Where |
-|---|-------------|-------|
-| 1 | Secure platform/API to upload & update student data by APAAR ID | `POST /api/students`, `/bulk`, `/upload-csv`, `PUT /api/students/{apaar_id}`; UI **Student Data Upload** |
-| 2 | Fields: approved intake, actual enrolment, supernumerary, NRI, OCI, FN, others | 21-field schema (`backend/app/models.py`) |
-| 3 | Automated validation (duplicates, invalid/missing APAAR, intake excess, inconsistencies, cross-institution duplicates) | `services/validation/engine.py` |
-| 4 | Dashboards for AICTE & institutions | Dashboard → **Real-time Admissions Monitor** + stats, review queue |
-| 5 | Secure verification for AICTE, institutions, employers, regulators | `GET /api/verify/{apaar_id}` + UI **Verify APAAR ID** (RBAC, consent masking, audited) |
-| 6 | Verifiable student records | AICTE officer approval → SHA-256 signed record + QR certificate |
-| 7 | Integration/API | REST + OpenAPI `/docs`, bulk JSON endpoint for ERP/LMS |
-| 8 | Security, privacy, RBAC, audit, consent | JWT, 4 roles, institution data scoping, audit trail, per-student consent |
-| 9 | Reports | `GET /api/dashboard/export.csv`, `/api/dashboard/admissions` |
-| 10 | APAAR ID + Student ID on certificates | Certificate page prints `APAAR ID \| Student ID` |
-| – | Innovation: intelligent anomaly detection | explainable 0-100 inconsistency score; optional OCR path for scanned admission lists |
+| Requirement | LogicRed implementation |
+|---|---|
+| Upload/update student data by APAAR ID | Student entry, bulk CSV and student APIs |
+| Capture admission and category fields | Student schema includes intake, enrolment, supernumerary, NRI, OCI and foreign-national fields |
+| Detect inconsistent records | Duplicate, missing/invalid APAAR, intake and cross-institution validation flags |
+| Dashboards for monitoring | Admissions monitor, institution/program table and verification metrics |
+| Authorized verification | Role-aware verification workflow and consent-aware record handling |
+| Integration | REST API and OpenAPI docs |
+| Reports | Dashboard CSV export |
+| Human oversight | Human verification stage before official sign-off |
 
-## Run it
+Automated checks identify **potential inconsistencies only**. They do not make regulatory findings or replace AICTE Officer verification and digital sign-off.
+
+## Demo links
+
+- **Frontend:** https://logicred.vercel.app
+- **Registration:** https://logicred.vercel.app/register
+- **Login:** https://logicred.vercel.app/login
+- **Backend health:** https://logicred-api-nikhil-s-projects22.vercel.app/api/health
+- **API documentation:** https://logicred-api-nikhil-s-projects22.vercel.app/docs
+
+## Run locally
 
 ```bash
 cp .env.example .env
-docker compose up --build        # frontend :3000, API docs :8000/docs (auto-seeds demo data)
+docker compose up --build
 ```
-Local: `./setup.sh` once, then `./start_all.sh`. Tests: `cd backend && pytest`.
 
-## Demo logins (seeded)
+Frontend: `http://localhost:3000` · API docs: `http://localhost:8000/docs`
 
-| Role | Username | Password |
-|------|----------|----------|
-| AICTE Admin | `admin` | `Admin@123` |
-| AICTE Officer | `aicte_officer` | `Officer@123` |
-| Institution (Sample Institute of Technology) | `institution1` | `Institution@123` |
-| Institution (Demo College of Engineering) | `institution2` | `Institution@123` |
-| Employer / Regulator | `employer` | `Employer@123` |
+## Repository documentation
 
-Seed data (`backend/sample_data/students_sample.csv`) intentionally triggers intake overflow, invalid APAAR ID,
-cross-institution duplicate, category inconsistency and missing consent — see `sample-data/README.md`.
+- [SIH submission notes and presentation checklist](docs/SIH_SUBMISSION.md)
+- [API documentation](docs/API.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Database schema](database/schema.md)
 
-## Docs
-`docs/API.md` · `docs/ARCHITECTURE.md` · `database/schema.md`
+## Team / submission
 
-Automated checks flag **potential inconsistencies** that need official verification; they are not a regulatory finding.
+**Project:** LogicRed  
+**Repository:** https://github.com/nikhilkumar200408/logicred  
+**Live demo:** https://logicred.vercel.app
+
+For a judge walkthrough, start with the admissions dashboard, upload a CSV or enter a student record, demonstrate document digitization, then show the human verification screen and explain why automated flags always require authorized review.
