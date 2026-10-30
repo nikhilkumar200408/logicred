@@ -1,18 +1,23 @@
 """
-MongoDB connection (Motor async client) for LogicRed.
+Database adapter for LogicRed.
 
-Replaces the previous SQLAlchemy/SQLite setup. A single AsyncIOMotorClient is
-created at import time and reused for the life of the process; FastAPI's
-startup/shutdown hooks (see main.py) verify connectivity and build indexes.
+When DEMO_MODE=true and no external database is configured, use an in-memory
+Mongo-compatible mock. This keeps the API runnable for demos without MongoDB.
+Data is temporary and may reset when a serverless instance restarts.
 """
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
-
 from .config import settings
 
-client: AsyncIOMotorClient = AsyncIOMotorClient(settings.MONGODB_URL)
-db: AsyncIOMotorDatabase = client[settings.MONGODB_DB_NAME]
+if settings.DEMO_MODE:
+    from mongomock_motor import AsyncMongoMockClient
 
-# Collections (records, documents/submissions, audit, users, institutions)
+    client = AsyncMongoMockClient()
+else:
+    from motor.motor_asyncio import AsyncIOMotorClient
+
+    client = AsyncIOMotorClient(settings.MONGODB_URL)
+
+db = client[settings.MONGODB_DB_NAME]
+
 users_collection = db["users"]
 documents_collection = db["documents"]
 records_collection = db["records"]
@@ -20,13 +25,11 @@ audit_collection = db["audit"]
 institutions_collection = db["institutions"]
 
 
-def get_db() -> AsyncIOMotorDatabase:
-    """FastAPI dependency — returns the shared Motor database handle."""
+def get_db():
     return db
 
 
 async def create_indexes() -> None:
-    """Called once on app startup. Safe to call repeatedly (idempotent)."""
     await users_collection.create_index("username", unique=True)
     await documents_collection.create_index("uploaded_at")
     await records_collection.create_index("status")
@@ -41,5 +44,8 @@ async def create_indexes() -> None:
 
 
 async def ping() -> bool:
-    await client.admin.command("ping")
+    if settings.DEMO_MODE:
+        await client.admin.command("ping")
+    else:
+        await client.admin.command("ping")
     return True
