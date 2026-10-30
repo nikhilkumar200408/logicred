@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/Button";
@@ -136,8 +137,8 @@ export default function LoginPage() {
             </motion.div>
           </form>
 
-          <p className="mt-10 text-center text-xs text-ink/35">
-            Access is provisioned by your system administrator.
+          <p className="mt-7 text-center text-sm text-ink/55">
+            New to LogicRed? <Link href="/register" className="font-medium text-accent hover:underline">Create an account</Link>
           </p>
         </motion.div>
       </div>
