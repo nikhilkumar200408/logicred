@@ -1,8 +1,27 @@
-node_modules
-dist
+.DS_Store
+
+# Local environment files; keep example templates shareable.
 .env
 .env.*
 !.env.example
-.vercel
-*.log
-coverage
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.local.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+
+# Local uploads and logs
+backend/uploads/*
+!backend/uploads/.gitkeep
+logs/

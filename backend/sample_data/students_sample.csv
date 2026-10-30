@@ -1,0 +1,10 @@
+apaar_id,student_name,student_id,dob,gender,institution_id,institution_name,program,branch,year_of_admission,admission_category,approved_intake,actual_enrolment,supernumerary_seat,nri_category,oci_status,foreign_national,nationality,email,mobile,consent_given
+111122223331,Aarav Sharma,21BTCS001,14-08-2003,Male,1-1000000001,Sample Institute of Technology,B.Tech CSE,Computer Science,2025,General,2,3,No,No,No,No,Indian,aarav@example.com,9876543210,Yes
+111122223332,Diya Verma,21BTCS002,02-03-2004,Female,1-1000000001,Sample Institute of Technology,B.Tech CSE,Computer Science,2025,OBC,2,3,No,No,No,No,Indian,diya@example.com,9876543211,Yes
+111122223333,Karan Mehta,21BTCS003,19-11-2003,Male,1-1000000001,Sample Institute of Technology,B.Tech CSE,Computer Science,2025,General,2,3,No,No,No,No,Indian,karan@example.com,9876543212,Yes
+111122223334,Li Wei,21BTCS004,07-06-2003,Male,1-1000000001,Sample Institute of Technology,B.Tech CSE,Computer Science,2025,Foreign,2,3,Yes,No,No,Yes,Chinese,liwei@example.com,9876543213,Yes
+111122223335,Sara Khan,21BTCS005,23-01-2004,Female,1-1000000001,Sample Institute of Technology,B.Tech CSE,Computer Science,2025,NRI,2,3,Yes,Yes,No,No,Indian,sara@example.com,9876543214,Yes
+11112222,Rohit Das,21BTCS006,10-10-2003,Male,1-1000000001,Sample Institute of Technology,B.Tech CSE,Computer Science,2025,General,2,3,No,No,No,No,Indian,rohit@example.com,9876543215,Yes
+111122223331,Aarav Sharma,22BTME010,14-08-2003,Male,1-1000000002,Demo College of Engineering,B.Tech ME,Mechanical,2025,General,60,58,No,No,No,No,Indian,aarav@example.com,9876543210,Yes
+111122223340,Meera Iyer,22BTME011,05-05-2004,Female,1-1000000002,Demo College of Engineering,B.Tech ME,Mechanical,2025,General,60,58,No,No,Yes,Yes,Indian,meera@example.com,9876543216,Yes
+111122223341,Arjun Nair,22BTME012,30-09-2003,Male,1-1000000002,Demo College of Engineering,B.Tech ME,Mechanical,2025,General,60,58,No,No,No,No,Indian,arjun@example.com,9876543217,No

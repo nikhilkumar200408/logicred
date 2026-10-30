@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Loaded via the @import above at runtime in the browser (not required at
+     build time, so the app still builds and looks reasonable offline). */
+  --font-plex-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-plex-sans: "IBM Plex Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-plex-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html, body {
+  background-color: #F8FAFC;
+  color: #0F172A;
+}
+
+* {
+  border-color: #E2E8F0;
+}
+
+::selection {
+  background-color: #2563EB;
+  color: #FFFFFF;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

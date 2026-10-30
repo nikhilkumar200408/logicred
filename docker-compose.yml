@@ -1,0 +1,59 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: logicred_db
+    volumes:
+      - logicred_mongodata:/data/db
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      MONGODB_URL: mongodb://mongo:27017
+      MONGODB_DB_NAME: logicred_db
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: "480"
+      PASSWORD_HASH_SCHEME: ${PASSWORD_HASH_SCHEME:-bcrypt}
+      LLM_PROVIDER: ${LLM_PROVIDER:-demo}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      OCR_PROVIDER: ${OCR_PROVIDER:-tesseract}
+      EXTRACTION_PROVIDER: ${EXTRACTION_PROVIDER:-regex}
+      TRANSLATE_ENABLED: ${TRANSLATE_ENABLED:-true}
+      DEMO_MODE: "true"
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - logicred_uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+
+volumes:
+  logicred_mongodata:
+  logicred_uploads:

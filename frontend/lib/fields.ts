@@ -1,0 +1,25 @@
+export const FIELD_LABELS: Record<string, string> = {
+  apaar_id: "APAAR ID",
+  student_name: "Student Name",
+  student_id: "Student ID",
+  dob: "Date of Birth",
+  gender: "Gender",
+  institution_id: "Institution ID (AICTE)",
+  institution_name: "Institution",
+  program: "Program",
+  branch: "Branch",
+  year_of_admission: "Year of Admission",
+  admission_category: "Admission Category",
+  approved_intake: "Approved Intake",
+  actual_enrolment: "Actual Enrolment",
+  supernumerary_seat: "Supernumerary Seat",
+  nri_category: "NRI Category",
+  oci_status: "OCI Status",
+  foreign_national: "Foreign National (FN)",
+  nationality: "Nationality",
+  email: "Email",
+  mobile: "Mobile",
+  consent_given: "Student Consent",
+};
+
+export const FIELD_ORDER = Object.keys(FIELD_LABELS);
