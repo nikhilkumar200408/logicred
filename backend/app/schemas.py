@@ -6,6 +6,15 @@ from pydantic import BaseModel, ConfigDict
 
 # ---------- Auth ----------
 
+class RegisterRequest(BaseModel):
+    username: str
+    full_name: str
+    password: str
+    role: str
+    institution_id: Optional[str] = None
+    institution_name: Optional[str] = None
+
+
 class LoginRequest(BaseModel):
     username: str
     password: str
