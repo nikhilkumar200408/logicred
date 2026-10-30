@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     TRANSLATE_ENABLED: bool = True        # deep-translator; requires outbound internet
 
     DEMO_MODE: bool = True
+    ADMIN_USERNAME: str = ""
+    ADMIN_PASSWORD: str = ""
     CORS_ORIGINS: str = "http://localhost:3000"
 
     # Confidence thresholds (configurable per section 9 of spec)
