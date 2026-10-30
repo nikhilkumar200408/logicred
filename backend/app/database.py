@@ -45,7 +45,6 @@ async def create_indexes() -> None:
 
 async def ping() -> bool:
     if settings.DEMO_MODE:
-        await client.admin.command("ping")
-    else:
-        await client.admin.command("ping")
+        return True
+    await client.admin.command("ping")
     return True
